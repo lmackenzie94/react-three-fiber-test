@@ -1,12 +1,21 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import * as THREE from "three"
 import { Canvas, extend, useRender, useThree } from "react-three-fiber"
 import { useSpring, a } from "react-spring/three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
 import "./style.css"
 
 extend({ OrbitControls })
+
+const SpaceShip = () => {
+  const [model, setModel] = useState()
+  useEffect(() => {
+    new GLTFLoader().load("/scene.gltf", setModel)
+  })
+  return model ? <primitive object={model.scene} /> : null
+}
 
 const Controls = () => {
   const orbitRef = useRef()
@@ -62,16 +71,24 @@ const Box = () => {
 }
 
 export default () => (
-  <Canvas
-    camera={{ position: [0, 0, 5] }}
-    onCreated={({ gl }) => {
-      gl.shadowMap.enabled = true
-      gl.shadowMap.type = THREE.PCFSoftShadowMap
-    }}
-  >
-    <fog attach="fog" args={["white", 5, 15]} />
-    <Box />
-    <Controls />
-    <Plane />
-  </Canvas>
+  <>
+    <div className="bg" />
+    <h1>CAMP JEFFERSON</h1>
+    <Canvas
+      camera={{ position: [0, 0, 5] }}
+      onCreated={({ gl }) => {
+        gl.shadowMap.enabled = true
+        gl.shadowMap.type = THREE.PCFSoftShadowMap
+      }}
+    >
+      <ambientLight intensity={0.7} />
+      <spotLight position={[15, 20, 5]} penumbra={1} castShadow />
+      <fog attach="fog" args={["black", 20, 30]} />
+      {/* <Box /> */}
+      <Controls />
+      {/* <Plane /> */}
+      <SpaceShip />
+    </Canvas>
+    <div className="layer" />
+  </>
 )
