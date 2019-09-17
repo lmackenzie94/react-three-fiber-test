@@ -83,7 +83,7 @@ export default () => (
     >
       <ambientLight intensity={0.7} />
       <spotLight position={[15, 20, 5]} penumbra={1} castShadow />
-      <fog attach="fog" args={["black", 20, 30]} />
+      <fog attach="fog" args={["#171717", 20, 30]} />
       {/* <Box /> */}
       <Controls />
       {/* <Plane /> */}
